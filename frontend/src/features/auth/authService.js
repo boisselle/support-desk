@@ -1,18 +1,39 @@
-// import { createSlice, createAsyncThunk } from "@reduxjs/tookit";
+import axios from "axios";
 
-// const initialState = {
-//   user: null,
-//   isError: false,
-//   isSuccess: false,
-//   isLoading: false,
-//   message: "",
-// };
+const API_URL = "/api/users/";
 
-// export const authSlice = createSlice({
-//   name: "auth",
-//   initialState,
-//   reducers: {},
-//   extraReducers: (builder) => {},
-// });
+// Register user
+const register = async (userData) => {
+  const response = await axios.post(API_URL, userData);
 
-// export default authSlice.reducer;
+  //Save response to local storage
+  if (response.data) {
+    localStorage.setItem("user", JSON.stringify(response.data));
+  }
+
+  return response.data;
+};
+
+const login = async (userData) => {
+  const response = await axios.post(API_URL + "login", userData);
+
+  //Save response to local storage
+  if (response.data) {
+    localStorage.setItem("user", JSON.stringify(response.data));
+  }
+
+  return response.data;
+};
+
+// Logout user
+const logout = () => localStorage.removeItem("user");
+
+const authService = {
+  register,
+  logout,
+  login,
+};
+
+export default authService;
+
+// This file is accurate.
